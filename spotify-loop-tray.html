@@ -4,413 +4,208 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spotify Loop Tray</title>
-<link href="https://fonts.googleapis.com/css2?family=Circular+Std:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sp-green: #1DB954;
-    --sp-green-dim: #1aa34a;
-    --sp-black: #121212;
-    --sp-dark: #181818;
-    --sp-card: #282828;
-    --sp-hover: #333;
-    --sp-text: #FFFFFF;
-    --sp-muted: #B3B3B3;
-    --sp-border: #333;
-    --sp-tray: rgba(29,185,84,0.08);
-    --radius: 8px;
-    --radius-sm: 4px;
+    --green:#1DB954;--green-hi:#1ed760;
+    --black:#121212;--surface:#181818;--card:#282828;--hover:#2a2a2a;
+    --text:#FFFFFF;--muted:#B3B3B3;--subtle:#535353;
+    --border:rgba(255,255,255,0.08);
+    --tray-bg:rgba(29,185,84,0.07);--tray-border:rgba(29,185,84,0.18);
+    --r:8px;--r-sm:4px;--r-pill:500px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Circular Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: var(--sp-black);
-    color: var(--sp-text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center}
 
-  /* ── AUTH SCREEN ── */
-  #auth-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-    text-align: center;
-    gap: 1.5rem;
-  }
-  .sp-logo { color: var(--sp-green); font-size: 48px; }
-  #auth-screen h1 { font-size: 28px; font-weight: 700; }
-  #auth-screen p { color: var(--sp-muted); font-size: 14px; max-width: 360px; line-height: 1.6; }
-  .auth-btn {
-    background: var(--sp-green);
-    color: #000;
-    border: none;
-    padding: 14px 36px;
-    border-radius: 500px;
-    font-weight: 700;
-    font-size: 14px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: transform 0.1s, background 0.15s;
-  }
-  .auth-btn:hover { background: #1ed760; transform: scale(1.03); }
-  .auth-btn:active { transform: scale(0.98); }
-  .setup-box {
-    background: var(--sp-card);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 420px;
-    text-align: left;
-  }
-  .setup-box h3 { font-size: 14px; margin-bottom: 12px; color: var(--sp-muted); letter-spacing: 1px; text-transform: uppercase; }
-  .input-group { margin-bottom: 12px; }
-  .input-group label { display: block; font-size: 12px; color: var(--sp-muted); margin-bottom: 5px; }
-  .input-group input {
-    width: 100%;
-    background: #3E3E3E;
-    border: 1px solid var(--sp-border);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    color: var(--sp-text);
-    font-size: 13px;
-    font-family: 'DM Mono', monospace;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .input-group input:focus { border-color: var(--sp-green); }
-  .hint { font-size: 11px; color: var(--sp-muted); margin-top: 4px; }
-  .hint a { color: var(--sp-green); }
-  .divider { width: 100%; height: 1px; background: var(--sp-border); margin: 0.5rem 0; }
+  /* AUTH */
+  #auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center;gap:1.25rem}
+  #auth-screen h1{font-size:26px;font-weight:700}
+  #auth-screen p{color:var(--muted);font-size:13px;max-width:340px;line-height:1.65}
+  .setup-box{background:var(--card);border-radius:var(--r);padding:1.25rem;width:100%;max-width:400px;text-align:left}
+  .setup-box h3{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px}
+  .igrp{margin-bottom:10px}
+  .igrp label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
+  .igrp input{width:100%;background:#333;border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 11px;color:var(--text);font-size:12px;font-family:'DM Mono',monospace;outline:none;transition:border-color .15s}
+  .igrp input:focus{border-color:var(--green)}
+  .hint{font-size:11px;color:var(--subtle);margin-top:3px}
+  .hint a{color:var(--green);text-decoration:none}
+  .sp-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#000;border:none;padding:13px 24px;border-radius:var(--r-pill);font-weight:700;font-size:13px;cursor:pointer;letter-spacing:.5px;transition:background .15s,transform .1s;width:100%}
+  .sp-btn:hover{background:var(--green-hi)}
+  .sp-btn:active{transform:scale(.98)}
+  .auth-note{font-size:11px;color:#444;max-width:340px;line-height:1.6}
+  .auth-note code{background:#222;padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;font-size:10px;color:#888}
+  .divider{height:1px;background:var(--border);margin:8px 0}
 
-  /* ── APP SCREEN ── */
-  #app-screen { display: none; width: 100%; max-width: 480px; padding: 0 0 100px 0; }
-
-  /* Top bar */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    position: sticky;
-    top: 0;
-    background: var(--sp-black);
-    z-index: 10;
-    border-bottom: 0.5px solid var(--sp-border);
-  }
-  .topbar-left { display: flex; align-items: center; gap: 10px; }
-  .topbar-logo { color: var(--sp-green); font-size: 24px; }
-  .topbar h1 { font-size: 16px; font-weight: 700; }
-  .topbar-right { display: flex; align-items: center; gap: 10px; }
-  .user-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--sp-card);
-    border-radius: 500px;
-    padding: 4px 12px 4px 4px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  .user-avatar {
-    width: 24px; height: 24px; border-radius: 50%;
-    background: var(--sp-green);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; color: #000;
-  }
-  .logout-btn {
-    background: none; border: 1px solid var(--sp-border);
-    color: var(--sp-muted); font-size: 11px; padding: 4px 10px;
-    border-radius: 500px; cursor: pointer; transition: all 0.15s;
-  }
-  .logout-btn:hover { border-color: #fff; color: #fff; }
+  /* APP */
+  #app-screen{display:none;width:100%;max-width:460px;padding-bottom:12px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;position:sticky;top:0;background:var(--black);z-index:10;border-bottom:1px solid var(--border)}
+  .topbar-l{display:flex;align-items:center;gap:9px}
+  .tb-title{font-size:15px;font-weight:700}
+  .user-pill{display:flex;align-items:center;gap:6px;background:var(--card);border-radius:var(--r-pill);padding:4px 11px 4px 4px;font-size:12px;font-weight:500}
+  .u-avatar{width:22px;height:22px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#000;flex-shrink:0}
+  .logout-btn{background:none;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:4px 10px;border-radius:var(--r-pill);cursor:pointer;transition:all .15s}
+  .logout-btn:hover{border-color:var(--text);color:var(--text)}
 
   /* Now playing */
-  .now-playing-card {
-    margin: 16px;
-    background: linear-gradient(135deg, #1a2a1a 0%, #1a1a2a 100%);
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid rgba(29,185,84,0.2);
-  }
-  .np-label { font-size: 10px; color: var(--sp-green); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
-  .np-main { display: flex; align-items: center; gap: 14px; }
-  .np-art {
-    width: 56px; height: 56px; border-radius: 6px;
-    background: var(--sp-card);
-    flex-shrink: 0;
-    object-fit: cover;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
-  }
-  .np-art img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
-  .np-info { flex: 1; min-width: 0; }
-  .np-title { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .np-artist { font-size: 13px; color: var(--sp-muted); margin-top: 3px; }
-  .np-explicit { background: var(--sp-muted); color: var(--sp-black); font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 2px; margin-left: 5px; vertical-align: middle; }
-  .np-heart { background: none; border: none; cursor: pointer; color: var(--sp-muted); font-size: 18px; padding: 4px; transition: color 0.15s; }
-  .np-heart.liked { color: var(--sp-green); }
-  .progress-wrap { margin-top: 14px; }
-  .progress-times { display: flex; justify-content: space-between; font-size: 11px; color: var(--sp-muted); margin-bottom: 5px; font-family: 'DM Mono', monospace; }
-  .progress-bar { height: 4px; background: #535353; border-radius: 2px; cursor: pointer; position: relative; }
-  .progress-fill { height: 100%; background: var(--sp-green); border-radius: 2px; transition: width 0.5s linear; min-width: 0; }
-  .controls { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 14px; }
-  .ctrl { background: none; border: none; cursor: pointer; color: var(--sp-muted); display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 50%; transition: color 0.15s, transform 0.1s; }
-  .ctrl:hover { color: var(--sp-text); transform: scale(1.1); }
-  .ctrl.active { color: var(--sp-green); }
-  .ctrl.play-pause {
-    background: var(--sp-text); color: var(--sp-black);
-    width: 40px; height: 40px; border-radius: 50%;
-    transition: background 0.15s, transform 0.1s;
-  }
-  .ctrl.play-pause:hover { background: #fff; transform: scale(1.06); color: var(--sp-black); }
-  .ctrl svg { width: 20px; height: 20px; fill: currentColor; }
-  .ctrl.play-pause svg { width: 18px; height: 18px; }
-  .loop-mode-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-    padding: 2px 8px; border-radius: 500px;
-    margin-top: 10px; margin-left: auto; margin-right: auto;
-    width: fit-content;
-  }
-  .loop-mode-badge.off { display: none; }
-  .loop-mode-badge.all { background: rgba(255,255,255,0.1); color: var(--sp-muted); }
-  .loop-mode-badge.tray { background: rgba(29,185,84,0.15); color: var(--sp-green); }
+  .np-card{margin:12px;background:var(--surface);border-radius:12px;padding:14px;border:1px solid var(--border)}
+  .np-badge{font-size:10px;font-weight:700;color:var(--green);letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+  .np-main{display:flex;align-items:center;gap:12px}
+  .np-art{width:52px;height:52px;border-radius:6px;background:var(--card);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:24px}
+  .np-art img{width:100%;height:100%;object-fit:cover;border-radius:6px}
+  .np-info{flex:1;min-width:0}
+  .np-title{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .np-artist{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .np-add-btn{background:none;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px 10px;border-radius:var(--r-pill);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+  .np-add-btn:hover{border-color:var(--green);color:var(--green)}
+  .np-add-btn.in-tray{border-color:var(--green);color:var(--green);background:var(--tray-bg)}
+  .prog-wrap{margin-top:12px}
+  .prog-times{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace}
+  .prog-bar{height:3px;background:var(--subtle);border-radius:2px}
+  .prog-fill{height:100%;background:var(--green);border-radius:2px;transition:width .8s linear}
+  .controls{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:0 4px}
+  .ctrl{background:none;border:none;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;padding:5px;border-radius:50%;transition:color .15s,transform .1s}
+  .ctrl:hover{color:var(--text);transform:scale(1.1)}
+  .ctrl.on{color:var(--green)}
+  .ctrl svg{width:18px;height:18px;fill:currentColor}
+  .ctrl-play{background:var(--text);color:var(--black);width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s}
+  .ctrl-play:hover{background:#fff;transform:scale(1.05)}
+  .ctrl-play svg{width:16px;height:16px;fill:var(--black)}
+  .loop-status{text-align:center;margin-top:9px}
+  .loop-pill{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.6px;padding:3px 12px;border-radius:var(--r-pill);background:rgba(29,185,84,.13);color:var(--green)}
 
-  /* Tabs */
-  .tabs { display: flex; border-bottom: 1px solid var(--sp-border); margin: 0 16px; }
-  .tab-btn {
-    flex: 1; padding: 12px 8px; font-size: 13px; font-weight: 700;
-    color: var(--sp-muted); background: none; border: none; cursor: pointer;
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    transition: color 0.15s, border-color 0.15s;
-    letter-spacing: 0.3px;
-  }
-  .tab-btn .count-badge {
-    display: inline-flex; align-items: center; justify-content: center;
-    background: var(--sp-green); color: #000; font-size: 10px;
-    width: 18px; height: 18px; border-radius: 50%; margin-left: 5px;
-    vertical-align: middle; font-weight: 700;
-  }
-  .tab-btn.active { color: var(--sp-text); border-bottom-color: var(--sp-green); }
+  /* tabs */
+  .tabs{display:flex;border-bottom:1px solid var(--border);margin:0 12px}
+  .tab-btn{flex:1;padding:11px 8px;font-size:13px;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+  .tab-btn.active{color:var(--text);border-bottom-color:var(--green)}
+  .tab-btn .cbadge{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#000;font-size:10px;width:16px;height:16px;border-radius:50%;margin-left:4px;vertical-align:middle;font-weight:700}
 
-  /* Search bar */
-  .search-wrap { padding: 12px 16px 4px; }
-  .search-bar {
-    width: 100%;
-    background: var(--sp-card);
-    border: 1px solid var(--sp-border);
-    border-radius: 500px;
-    padding: 9px 16px 9px 38px;
-    color: var(--sp-text);
-    font-size: 13px;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.15s;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23B3B3B3'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: 12px center;
-  }
-  .search-bar:focus { border-color: var(--sp-green); }
-  .search-bar::placeholder { color: var(--sp-muted); }
+  /* queue panel */
+  .q-loading{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+  .spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .sec-hdr{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.1px;text-transform:uppercase;padding:12px 14px 6px}
+  .track-row{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:var(--r);transition:background .12s}
+  .track-row:hover{background:var(--hover)}
+  .track-row:hover .tr-actions{opacity:1}
+  .track-row.in-tray{background:var(--tray-bg)}
+  .track-row.in-tray .tr-actions{opacity:1}
+  .track-row.is-now{background:rgba(29,185,84,.09)}
+  .tr-num{width:20px;text-align:center;font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;flex-shrink:0}
+  .tr-art{width:38px;height:38px;border-radius:var(--r-sm);background:var(--card);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .tr-art img{width:100%;height:100%;object-fit:cover}
+  .tr-info{flex:1;min-width:0}
+  .tr-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tr-name.now{color:var(--green)}
+  .tr-sub{font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tr-dur{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;flex-shrink:0}
+  .tr-actions{display:flex;align-items:center;gap:4px;opacity:0;transition:opacity .12s;flex-shrink:0}
+  .tray-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+  .add-btn{font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--r-pill);border:1px solid var(--border);cursor:pointer;transition:all .12s;background:none;color:var(--muted);white-space:nowrap}
+  .add-btn:hover{border-color:var(--green);color:var(--green)}
+  .add-btn.added{background:var(--tray-bg);border-color:var(--green);color:var(--green)}
+  .playing-bars{display:flex;align-items:flex-end;gap:2px;height:13px}
+  .bar{width:3px;background:var(--green);border-radius:1px}
+  .bar:nth-child(1){animation:bars 1s ease-in-out infinite}
+  .bar:nth-child(2){animation:bars 1s ease-in-out infinite .18s}
+  .bar:nth-child(3){animation:bars 1s ease-in-out infinite .36s}
+  @keyframes bars{0%,100%{height:3px}50%{height:13px}}
+  .q-empty{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px;line-height:1.9}
 
-  /* Track list */
-  .section-title { font-size: 12px; font-weight: 700; color: var(--sp-muted); letter-spacing: 1px; text-transform: uppercase; padding: 14px 16px 8px; }
-  .track-list { padding: 0 8px; }
-  .track-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 7px 8px; border-radius: var(--radius);
-    cursor: pointer; transition: background 0.12s;
-    position: relative;
-  }
-  .track-item:hover { background: var(--sp-hover); }
-  .track-item.in-loop { background: var(--sp-tray); }
-  .track-item.is-current { background: rgba(29,185,84,0.1); }
-  .track-num {
-    width: 22px; text-align: center; font-size: 13px;
-    color: var(--sp-muted); font-family: 'DM Mono', monospace; flex-shrink: 0;
-  }
-  .track-num.playing-anim { color: var(--sp-green); }
-  .track-art {
-    width: 40px; height: 40px; border-radius: 4px;
-    background: var(--sp-card); flex-shrink: 0;
-    object-fit: cover; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; font-size: 20px;
-  }
-  .track-art img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; }
-  .track-info { flex: 1; min-width: 0; }
-  .track-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .track-name.playing { color: var(--sp-green); }
-  .track-sub { font-size: 12px; color: var(--sp-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .track-duration { font-size: 12px; color: var(--sp-muted); font-family: 'DM Mono', monospace; flex-shrink: 0; }
-  .track-actions { display: flex; align-items: center; gap: 4px; opacity: 0; transition: opacity 0.12s; }
-  .track-item:hover .track-actions { opacity: 1; }
-  .track-item.in-loop .track-actions { opacity: 1; }
-  .loop-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sp-green); flex-shrink: 0; }
-  .add-loop-btn {
-    font-size: 10px; font-weight: 700; padding: 3px 9px;
-    border-radius: 500px; border: 1px solid var(--sp-border);
-    cursor: pointer; transition: all 0.12s; background: none; color: var(--sp-muted);
-    letter-spacing: 0.3px; white-space: nowrap;
-  }
-  .add-loop-btn:hover { border-color: var(--sp-green); color: var(--sp-green); }
-  .add-loop-btn.added { background: rgba(29,185,84,0.15); border-color: var(--sp-green); color: var(--sp-green); }
-  .play-on-spotify-btn {
-    font-size: 10px; font-weight: 700; padding: 3px 9px;
-    border-radius: 500px; border: 1px solid var(--sp-border);
-    cursor: pointer; transition: all 0.12s; background: none; color: var(--sp-muted);
-    letter-spacing: 0.3px; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; gap: 3px;
-  }
-  .play-on-spotify-btn:hover { border-color: var(--sp-text); color: var(--sp-text); }
+  /* tray panel */
+  .tray-panel{padding:0 12px}
+  .tray-explain{font-size:12px;color:var(--subtle);background:var(--surface);border-radius:var(--r);padding:10px 14px;margin:10px 0;line-height:1.7;border:1px solid var(--border)}
+  .tray-explain span{color:var(--green);font-weight:700}
+  .activate-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:var(--green);color:#000;border:1px solid transparent;padding:11px;border-radius:var(--r-pill);font-weight:700;font-size:13px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;margin-bottom:10px}
+  .activate-btn:hover{background:var(--green-hi)}
+  .activate-btn.off{background:#2a2a2a;color:var(--muted);border-color:var(--border)}
+  .activate-btn.off:hover{background:#333;color:var(--text);border-color:rgba(255,255,255,0.15)}
+  .activate-btn.on{background:rgba(29,185,84,.12);color:var(--green);border-color:var(--green)}
+  .activate-btn.on:hover{background:rgba(29,185,84,.18)}
+  .activate-btn svg{width:15px;height:15px;fill:currentColor}
+  .tray-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--tray-border)}
+  .tray-row:last-child{border-bottom:none}
+  .tray-idx{width:18px;text-align:center;font-size:12px;color:var(--green);font-family:'DM Mono',monospace;font-weight:700;flex-shrink:0}
+  .tray-art{width:34px;height:34px;border-radius:var(--r-sm);background:var(--card);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .tray-art img{width:100%;height:100%;object-fit:cover}
+  .tray-info{flex:1;min-width:0}
+  .tray-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tray-sub{font-size:11px;color:var(--muted)}
+  .tray-now{font-size:9px;color:var(--green);font-weight:700;background:rgba(29,185,84,.12);padding:1px 6px;border-radius:var(--r-pill);margin-left:5px;vertical-align:middle}
+  .tray-rm{background:none;border:none;color:var(--subtle);cursor:pointer;font-size:17px;padding:0 3px;line-height:1;transition:color .12s;flex-shrink:0}
+  .tray-rm:hover{color:#e55}
+  .tray-empty{text-align:center;padding:32px 16px;color:var(--muted);font-size:13px;line-height:1.9}
+  .tray-empty .big{font-size:36px;display:block;margin-bottom:10px}
 
-  /* Loop Tray panel */
-  .loop-tray-panel { padding: 0 8px; }
-  .tray-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 8px 8px; }
-  .tray-title { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--sp-green); }
-  .tray-title svg { width: 16px; height: 16px; fill: var(--sp-green); }
-  .tray-clear { background: none; border: 1px solid var(--sp-border); color: var(--sp-muted); font-size: 11px; padding: 4px 10px; border-radius: 500px; cursor: pointer; transition: all 0.12s; }
-  .tray-clear:hover { border-color: #e55; color: #e55; }
-  .activate-loop-btn {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: calc(100% - 16px); margin: 0 8px 12px;
-    background: var(--sp-green); color: #000; border: none;
-    padding: 12px; border-radius: 500px; font-weight: 700; font-size: 13px;
-    cursor: pointer; transition: background 0.15s, transform 0.1s; letter-spacing: 0.5px;
-  }
-  .activate-loop-btn:hover { background: #1ed760; transform: scale(1.01); }
-  .activate-loop-btn.active { background: rgba(29,185,84,0.15); color: var(--sp-green); border: 1px solid var(--sp-green); }
-  .activate-loop-btn svg { width: 16px; height: 16px; fill: currentColor; }
-  .tray-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 8px; border-radius: var(--radius);
-    background: rgba(29,185,84,0.06);
-    border: 1px solid rgba(29,185,84,0.12);
-    margin-bottom: 6px;
-  }
-  .tray-order { width: 20px; text-align: center; font-size: 13px; color: var(--sp-green); font-family: 'DM Mono', monospace; font-weight: 700; flex-shrink: 0; }
-  .tray-art { width: 36px; height: 36px; border-radius: 4px; background: var(--sp-card); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-  .tray-art img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; }
-  .tray-info { flex: 1; min-width: 0; }
-  .tray-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tray-sub { font-size: 11px; color: var(--sp-muted); margin-top: 1px; }
-  .tray-remove { background: none; border: none; color: #666; cursor: pointer; font-size: 18px; padding: 0 4px; line-height: 1; transition: color 0.12s; }
-  .tray-remove:hover { color: #e55; }
-  .tray-empty { text-align: center; padding: 40px 20px; color: var(--sp-muted); font-size: 13px; line-height: 1.8; }
-  .tray-empty .big-icon { font-size: 40px; display: block; margin-bottom: 12px; }
-  .tray-how-text { font-size: 12px; color: #555; background: var(--sp-card); border-radius: var(--radius); padding: 12px 16px; margin: 0 8px 12px; line-height: 1.7; }
-  .tray-how-text span { color: var(--sp-green); font-weight: 700; }
-
-  /* Toast */
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(0);
-    background: #333; color: #fff; font-size: 13px; font-weight: 500;
-    padding: 10px 20px; border-radius: 500px; z-index: 100;
-    opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
-    white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* Loading */
-  .loading { text-align: center; padding: 40px; color: var(--sp-muted); }
-  .spinner { display: inline-block; width: 24px; height: 24px; border: 2px solid var(--sp-border); border-top-color: var(--sp-green); border-radius: 50%; animation: spin 0.7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .playing-bars { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
-  .bar { width: 3px; background: var(--sp-green); border-radius: 1px; }
-  .bar:nth-child(1) { animation: bar 1.0s ease-in-out infinite; }
-  .bar:nth-child(2) { animation: bar 1.0s ease-in-out infinite 0.2s; }
-  .bar:nth-child(3) { animation: bar 1.0s ease-in-out infinite 0.4s; }
-  @keyframes bar { 0%,100%{height:4px} 50%{height:14px} }
-  .no-premium { background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3); border-radius: var(--radius); padding: 12px 16px; margin: 12px 16px; font-size: 12px; color: #ff8080; line-height: 1.6; }
-  .no-premium a { color: #ff6060; }
+  /* toast */
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--card);color:var(--text);font-size:12px;font-weight:500;padding:9px 18px;border-radius:var(--r-pill);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap;border:1px solid var(--border)}
+  .toast.show{opacity:1}
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- ══════════ AUTH ══════════ -->
 <div id="auth-screen">
-  <div class="sp-logo">
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.35-.7.5-1.05.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.3.15.45.65.2 1zm-1.2 2.75c-.2.3-.55.4-.85.2-2.35-1.45-5.3-1.75-8.8-.95-.3.1-.65-.15-.75-.45-.1-.3.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.4.55.25.85z" fill="#121212"/></svg>
-  </div>
-  <h1>Loop Tray for Spotify</h1>
-  <p>Loop 2–5 songs together without creating a playlist. Connect your Spotify Premium account to get started.</p>
-  
+  <svg width="44" height="44" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.35-.7.5-1.05.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.3.15.45.65.2 1zm-1.2 2.75c-.2.3-.55.4-.85.2-2.35-1.45-5.3-1.75-8.8-.95-.3.1-.65-.15-.75-.45-.1-.3.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.4.55.25.85z" fill="#121212"/></svg>
+  <h1>Spotify Loop Tray</h1>
+  <p>Loop 2–10 songs together without creating a playlist. Needs Spotify Premium + your own app credentials.</p>
   <div class="setup-box">
-    <h3>Your Spotify App Credentials</h3>
-    <div class="input-group">
+    <h3>App Credentials</h3>
+    <div class="igrp">
       <label>Client ID</label>
-      <input type="text" id="client-id-input" placeholder="e.g. 4b79a7c3d2e1f0a9b8c7d6e5f4a3b2c1" />
-      <div class="hint">Get this from <a href="https://developer.spotify.com/dashboard" target="_blank">developer.spotify.com/dashboard</a></div>
+      <input id="inp-cid" type="text" placeholder="e.g. 4b79a7c3d2e1f0a9b8c7d6e5f4a3b2c1" autocomplete="off" spellcheck="false"/>
+      <div class="hint">From <a href="https://developer.spotify.com/dashboard" target="_blank">developer.spotify.com/dashboard</a></div>
     </div>
-    <div class="input-group">
-      <label>Redirect URI (must match your app settings)</label>
-      <input type="text" id="redirect-uri-input" placeholder="e.g. http://127.0.0.1:5500/index.html" />
-      <div class="hint">Must be HTTPS or 127.0.0.1 — add this exact URI in your Spotify App settings</div>
+    <div class="igrp">
+      <label>Redirect URI <span style="color:#555">(add this exact value in Dashboard → App Settings)</span></label>
+      <input id="inp-ruri" type="text" placeholder="http://127.0.0.1:5500/index.html" autocomplete="off" spellcheck="false"/>
     </div>
     <div class="divider"></div>
-    <div class="hint" style="margin-bottom:12px;">Required scopes: <code style="background:#333;padding:2px 4px;border-radius:3px;font-size:11px;">user-read-currently-playing user-read-playback-state user-modify-playback-state user-read-recently-played user-library-read streaming</code></div>
-    <button class="auth-btn" onclick="startAuth()" style="width:100%">Connect with Spotify</button>
+    <div class="hint" style="margin-bottom:10px">Scopes needed: <code>user-read-currently-playing user-read-playback-state user-modify-playback-state streaming user-read-private</code></div>
+    <button class="sp-btn" onclick="startAuth()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      Connect with Spotify
+    </button>
   </div>
-
-  <p style="font-size:11px;color:#444;max-width:360px;">
-    This app uses <strong style="color:#666;">Authorization Code + PKCE</strong> flow as per Spotify's current requirements (implicit grant was removed Nov 2025). Your data never leaves your browser.
-  </p>
+  <p class="auth-note">Uses <strong style="color:#666">Auth Code + PKCE</strong> — Spotify's current standard. No server needed. Token stays in your browser.</p>
 </div>
 
-<!-- APP SCREEN -->
+<!-- ══════════ APP ══════════ -->
 <div id="app-screen">
   <div class="topbar">
-    <div class="topbar-left">
-      <svg class="topbar-logo" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.35-.7.5-1.05.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.3.15.45.65.2 1zm-1.2 2.75c-.2.3-.55.4-.85.2-2.35-1.45-5.3-1.75-8.8-.95-.3.1-.65-.15-.75-.45-.1-.3.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.4.55.25.85z" fill="#121212"/></svg>
-      <h1>Loop Tray</h1>
+    <div class="topbar-l">
+      <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.35-.7.5-1.05.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.3.15.45.65.2 1zm-1.2 2.75c-.2.3-.55.4-.85.2-2.35-1.45-5.3-1.75-8.8-.95-.3.1-.65-.15-.75-.45-.1-.3.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.4.55.25.85z" fill="#121212"/></svg>
+      <span class="tb-title">Loop Tray</span>
     </div>
-    <div class="topbar-right">
-      <div class="user-pill">
-        <div class="user-avatar" id="user-initials">?</div>
-        <span id="user-name">Loading...</span>
-      </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="user-pill"><div class="u-avatar" id="u-init">?</div><span id="u-name">—</span></div>
       <button class="logout-btn" onclick="logout()">Log out</button>
     </div>
   </div>
 
-  <!-- Now Playing -->
-  <div id="np-section">
-    <div class="loading"><div class="spinner"></div><br><br><span style="font-size:12px;">Loading playback...</span></div>
-  </div>
+  <div id="np-zone"></div>
 
-  <!-- Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" id="tab-queue" onclick="switchTab('queue')">Recently Played</button>
+    <button class="tab-btn active" id="tab-queue" onclick="switchTab('queue')">Up Next (Queue)</button>
     <button class="tab-btn" id="tab-tray" onclick="switchTab('tray')">
-      Loop Tray <span class="count-badge" id="tray-count-badge" style="display:none">0</span>
+      Loop Tray <span class="cbadge" id="tray-badge" style="display:none">0</span>
     </button>
   </div>
 
-  <!-- Queue panel -->
   <div id="panel-queue">
-    <div class="search-wrap">
-      <input type="text" class="search-bar" id="search-input" placeholder="Search your recent tracks..." oninput="filterTracks()">
-    </div>
-    <div id="track-list-container"><div class="loading"><div class="spinner"></div></div></div>
+    <div class="q-loading" id="q-loading"><span class="spinner"></span>Loading queue...</div>
+    <div id="q-content" style="display:none"></div>
   </div>
 
-  <!-- Loop Tray panel -->
   <div id="panel-tray" style="display:none">
-    <div class="loop-tray-panel">
-      <div class="tray-how-text">
-        <span>How it works:</span> Add 2–5 songs below using "+ Loop" next to any track. Then hit "Activate Loop Tray" — Spotify will watch for when each tray song ends and automatically queue the next tray song, cycling through them forever.
+    <div class="tray-panel">
+      <div class="tray-explain">
+        <span>How Loop Tray works:</span> Add songs, then hit Activate. This app polls your playback every 2 seconds using <code style="background:#222;padding:1px 4px;border-radius:3px;font-size:10px">GET /me/player</code>. The moment a tray song ends and the next track starts, we immediately call <code style="background:#222;padding:1px 4px;border-radius:3px;font-size:10px">POST /me/player/queue</code> to inject the next tray song — creating a seamless loop across any device.
       </div>
-      <button class="activate-loop-btn" id="activate-btn" onclick="toggleLoopTray()">
+      <button class="activate-btn" id="act-btn" onclick="toggleLoopTray()">
         <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
         Activate Loop Tray
       </button>
-      <div id="tray-content"></div>
+      <div id="tray-list"></div>
     </div>
   </div>
 </div>
@@ -418,497 +213,381 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── PKCE UTILS ──
-function generateCodeVerifier(length = 128) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-  let result = '';
-  const arr = new Uint8Array(length);
-  crypto.getRandomValues(arr);
-  arr.forEach(n => result += chars[n % chars.length]);
-  return result;
-}
-async function generateCodeChallenge(verifier) {
-  const data = new TextEncoder().encode(verifier);
-  const digest = await crypto.subtle.digest('SHA-256', data);
-  return btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
+// ── PKCE ──
+function genVerifier(n=128){const c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';const a=new Uint8Array(n);crypto.getRandomValues(a);return Array.from(a,b=>c[b%c.length]).join('')}
+async function genChallenge(v){const d=new TextEncoder().encode(v);const h=await crypto.subtle.digest('SHA-256',d);return btoa(String.fromCharCode(...new Uint8Array(h))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 
-// ── CONFIG & STATE ──
-let CLIENT_ID = '';
-let REDIRECT_URI = '';
-const SCOPES = 'user-read-currently-playing user-read-playback-state user-modify-playback-state user-read-recently-played user-library-read streaming user-read-private';
+const SCOPES='user-read-currently-playing user-read-playback-state user-modify-playback-state streaming user-read-private';
 
-let accessToken = null;
-let currentTrack = null;
-let playbackState = null;
-let recentTracks = [];
-let loopTray = [];
-let loopTrayActive = false;
-let loopWatchInterval = null;
-let currentTab = 'queue';
-let searchQuery = '';
+// ── STATE ──
+let token=null,currentTrack=null,playbackState=null;
+let loopTray=[],loopActive=false;
+let prevTrackId=null,lastQueuedFor=null,watchTimer=null;
+let currentTab='queue';
 
 // ── AUTH ──
-async function startAuth() {
-  CLIENT_ID = document.getElementById('client-id-input').value.trim();
-  REDIRECT_URI = document.getElementById('redirect-uri-input').value.trim();
-  if (!CLIENT_ID) { showToast('Please enter your Client ID'); return; }
-  if (!REDIRECT_URI) { showToast('Please enter your Redirect URI'); return; }
-  localStorage.setItem('sp_client_id', CLIENT_ID);
-  localStorage.setItem('sp_redirect_uri', REDIRECT_URI);
-
-  const verifier = generateCodeVerifier();
-  const challenge = await generateCodeChallenge(verifier);
-  localStorage.setItem('sp_code_verifier', verifier);
-
-  const params = new URLSearchParams({
-    response_type: 'code',
-    client_id: CLIENT_ID,
-    scope: SCOPES,
-    redirect_uri: REDIRECT_URI,
-    code_challenge_method: 'S256',
-    code_challenge: challenge,
-    state: Math.random().toString(36).substring(2)
-  });
-  window.location = `https://accounts.spotify.com/authorize?${params}`;
+async function startAuth(){
+  const cid=document.getElementById('inp-cid').value.trim();
+  const ruri=document.getElementById('inp-ruri').value.trim();
+  if(!cid||!ruri){toast('Enter Client ID and Redirect URI');return}
+  localStorage.setItem('sp_cid',cid);localStorage.setItem('sp_ruri',ruri);
+  const v=genVerifier();const ch=await genChallenge(v);
+  localStorage.setItem('sp_v',v);
+  window.location=`https://accounts.spotify.com/authorize?`+new URLSearchParams({response_type:'code',client_id:cid,scope:SCOPES,redirect_uri:ruri,code_challenge_method:'S256',code_challenge:ch});
 }
 
-async function handleCallback() {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
-  if (!code) return false;
+async function handleCallback(){
+  const code=new URLSearchParams(window.location.search).get('code');
+  if(!code)return false;
+  const cid=localStorage.getItem('sp_cid'),ruri=localStorage.getItem('sp_ruri'),v=localStorage.getItem('sp_v');
+  if(!cid||!v)return false;
+  const r=await fetch('https://accounts.spotify.com/api/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'authorization_code',code,redirect_uri:ruri,client_id:cid,code_verifier:v})});
+  const d=await r.json();
+  if(!d.access_token)return false;
+  saveToken(d);window.history.replaceState({},'',window.location.pathname);return true;
+}
 
-  CLIENT_ID = localStorage.getItem('sp_client_id') || '';
-  REDIRECT_URI = localStorage.getItem('sp_redirect_uri') || '';
-  const verifier = localStorage.getItem('sp_code_verifier') || '';
+async function doRefresh(){
+  const rt=localStorage.getItem('sp_rt'),cid=localStorage.getItem('sp_cid');
+  if(!rt||!cid)return false;
+  const r=await fetch('https://accounts.spotify.com/api/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'refresh_token',refresh_token:rt,client_id:cid})});
+  const d=await r.json();
+  if(!d.access_token)return false;
+  saveToken(d);return true;
+}
 
-  if (!CLIENT_ID || !verifier) { showToast('Auth error: missing credentials'); return false; }
+function saveToken(d){token=d.access_token;localStorage.setItem('sp_token',token);localStorage.setItem('sp_exp',Date.now()+d.expires_in*1000);if(d.refresh_token)localStorage.setItem('sp_rt',d.refresh_token)}
 
-  const res = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: REDIRECT_URI,
-      client_id: CLIENT_ID,
-      code_verifier: verifier
-    })
-  });
-  const data = await res.json();
-  if (data.access_token) {
-    accessToken = data.access_token;
-    localStorage.setItem('sp_access_token', accessToken);
-    localStorage.setItem('sp_token_expiry', Date.now() + data.expires_in * 1000);
-    if (data.refresh_token) localStorage.setItem('sp_refresh_token', data.refresh_token);
-    window.history.replaceState({}, '', window.location.pathname);
-    return true;
+async function ensureToken(){
+  if(Date.now()>parseInt(localStorage.getItem('sp_exp')||0)-60000){if(!await doRefresh()){logout();return false}}
+  if(!token)token=localStorage.getItem('sp_token');return!!token;
+}
+
+function logout(){
+  ['sp_token','sp_rt','sp_exp','sp_v'].forEach(k=>localStorage.removeItem(k));
+  token=null;loopActive=false;clearInterval(watchTimer);
+  document.getElementById('auth-screen').style.display='flex';
+  document.getElementById('app-screen').style.display='none';
+  ['sp_cid','sp_ruri'].forEach(k=>{const el=document.getElementById(k==='sp_cid'?'inp-cid':'inp-ruri');if(el)el.value=localStorage.getItem(k)||''});
+}
+
+// ── API WRAPPER ──
+async function api(path,opts={}){
+  if(!await ensureToken())return null;
+  const r=await fetch(`https://api.spotify.com/v1${path}`,{...opts,headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json',...(opts.headers||{})}});
+  if(r.status===204||r.status===202)return{};
+  if(r.status===401){await doRefresh();return null}
+  if(!r.ok){console.warn('API',r.status,path);return null}
+  const t2=await r.text();return t2?JSON.parse(t2):{}
+}
+
+// ── LOADERS ──
+async function loadProfile(){const d=await api('/me');if(!d)return;const n=d.display_name||d.id||'User';document.getElementById('u-name').textContent=n;document.getElementById('u-init').textContent=n.slice(0,2).toUpperCase()}
+
+async function loadPlayback(){
+  const d=await api('/me/player');
+  playbackState=d;currentTrack=d?.item||null;
+  renderNP();
+}
+
+// ── QUEUE ──
+// Uses GET /me/player/queue which returns { currently_playing, queue: [] }
+async function loadQueue(){
+  document.getElementById('q-loading').style.display='block';
+  document.getElementById('q-content').style.display='none';
+
+  const d=await api('/me/player/queue');
+
+  document.getElementById('q-loading').style.display='none';
+  document.getElementById('q-content').style.display='block';
+
+  if(!d){
+    document.getElementById('q-content').innerHTML=`<div class="q-empty">Could not load queue.<br>Make sure Spotify is open and playing.</div>`;return;
   }
-  console.error('Token error:', data);
-  return false;
-}
 
-async function tryRefreshToken() {
-  const refreshToken = localStorage.getItem('sp_refresh_token');
-  const clientId = localStorage.getItem('sp_client_id');
-  if (!refreshToken || !clientId) return false;
-  const res = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: refreshToken, client_id: clientId })
-  });
-  const data = await res.json();
-  if (data.access_token) {
-    accessToken = data.access_token;
-    localStorage.setItem('sp_access_token', accessToken);
-    localStorage.setItem('sp_token_expiry', Date.now() + data.expires_in * 1000);
-    return true;
+  const cp=d.currently_playing;
+  const queue=d.queue||[];
+
+  if(!cp&&queue.length===0){
+    document.getElementById('q-content').innerHTML=`<div class="q-empty">Nothing in queue right now.<br>Start playing something in Spotify first.</div>`;return;
   }
-  return false;
-}
 
-async function ensureToken() {
-  const expiry = parseInt(localStorage.getItem('sp_token_expiry') || '0');
-  if (Date.now() > expiry - 60000) {
-    const ok = await tryRefreshToken();
-    if (!ok) { logout(); return false; }
+  let html='';
+  if(cp){
+    html+=`<div class="sec-hdr">Now Playing</div>`;
+    html+=rowHTML(cp,'now',null);
   }
-  if (!accessToken) accessToken = localStorage.getItem('sp_access_token');
-  return !!accessToken;
-}
-
-function logout() {
-  ['sp_access_token','sp_refresh_token','sp_token_expiry','sp_code_verifier'].forEach(k => localStorage.removeItem(k));
-  accessToken = null;
-  loopTrayActive = false;
-  clearInterval(loopWatchInterval);
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('app-screen').style.display = 'none';
-  // restore saved credentials
-  const cid = localStorage.getItem('sp_client_id');
-  const ruri = localStorage.getItem('sp_redirect_uri');
-  if (cid) document.getElementById('client-id-input').value = cid;
-  if (ruri) document.getElementById('redirect-uri-input').value = ruri;
-}
-
-// ── SPOTIFY API CALLS ──
-async function spotifyFetch(endpoint, options = {}) {
-  const ok = await ensureToken();
-  if (!ok) return null;
-  const res = await fetch(`https://api.spotify.com/v1${endpoint}`, {
-    ...options,
-    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json', ...(options.headers || {}) }
-  });
-  if (res.status === 204 || res.status === 202) return {};
-  if (res.status === 401) { await tryRefreshToken(); return null; }
-  if (!res.ok) { console.error('API error', res.status, endpoint); return null; }
-  const text = await res.text();
-  return text ? JSON.parse(text) : {};
-}
-
-async function loadUserProfile() {
-  const data = await spotifyFetch('/me');
-  if (!data) return;
-  const name = data.display_name || data.id || 'User';
-  document.getElementById('user-name').textContent = name;
-  document.getElementById('user-initials').textContent = name.slice(0,2).toUpperCase();
-}
-
-async function loadPlaybackState() {
-  const data = await spotifyFetch('/me/player');
-  playbackState = data;
-  currentTrack = data?.item || null;
-  renderNowPlaying();
-}
-
-async function loadRecentTracks() {
-  const data = await spotifyFetch('/me/player/recently-played?limit=50');
-  if (!data || !data.items) { recentTracks = []; renderTrackList(); return; }
-  // deduplicate by track id
-  const seen = new Set();
-  recentTracks = data.items
-    .filter(item => { if (!item.track || seen.has(item.track.id)) return false; seen.add(item.track.id); return true; })
-    .map(item => item.track);
-  renderTrackList();
-}
-
-async function playTrack(trackUri, contextUri = null) {
-  const body = contextUri
-    ? { context_uri: contextUri, offset: { uri: trackUri } }
-    : { uris: [trackUri] };
-  await spotifyFetch('/me/player/play', { method: 'PUT', body: JSON.stringify(body) });
-  setTimeout(loadPlaybackState, 600);
-  showToast('Playing track');
-}
-
-async function pausePlayback() {
-  await spotifyFetch('/me/player/pause', { method: 'PUT' });
-  setTimeout(loadPlaybackState, 400);
-}
-
-async function resumePlayback() {
-  await spotifyFetch('/me/player/play', { method: 'PUT', body: JSON.stringify({}) });
-  setTimeout(loadPlaybackState, 400);
-}
-
-async function skipNext() {
-  await spotifyFetch('/me/player/next', { method: 'POST' });
-  setTimeout(loadPlaybackState, 600);
-}
-
-async function skipPrev() {
-  await spotifyFetch('/me/player/previous', { method: 'POST' });
-  setTimeout(loadPlaybackState, 600);
-}
-
-async function addToQueue(trackUri) {
-  await spotifyFetch(`/me/player/queue?uri=${encodeURIComponent(trackUri)}`, { method: 'POST' });
-}
-
-async function setRepeatMode(mode) { // track | context | off
-  await spotifyFetch(`/me/player/repeat?state=${mode}`, { method: 'PUT' });
-}
-
-// ── LOOP TRAY LOGIC ──
-// Strategy: When Loop Tray is active, we monitor playback.
-// When a tray song is about to end (< 10 seconds left), we queue the next tray song.
-// This achieves seamless looping through the tray.
-
-async function toggleLoopTray() {
-  if (loopTray.length === 0) { showToast('Add songs to your Loop Tray first!'); return; }
-  loopTrayActive = !loopTrayActive;
-  if (loopTrayActive) {
-    // Set Spotify repeat to "off" so we control the flow
-    await setRepeatMode('off');
-    showToast(`Loop Tray activated — ${loopTray.length} songs looping`);
-    startLoopWatcher();
-  } else {
-    clearInterval(loopWatchInterval);
-    loopWatchInterval = null;
-    showToast('Loop Tray deactivated');
+  if(queue.length>0){
+    // dedupe by track id
+    const seen=new Set();
+    const tracks=queue.filter(t=>{if(!t||seen.has(t.id))return false;seen.add(t.id);return true});
+    html+=`<div class="sec-hdr">Up Next · ${tracks.length} track${tracks.length!==1?'s':''}</div>`;
+    tracks.forEach((t,i)=>html+=rowHTML(t,'queue',i+1));
   }
-  renderTrayPanel();
-  renderNowPlaying();
+  document.getElementById('q-content').innerHTML=html;
 }
 
-let lastQueuedTrackId = null;
-let trayIndex = 0;
-
-function startLoopWatcher() {
-  clearInterval(loopWatchInterval);
-  loopWatchInterval = setInterval(async () => {
-    if (!loopTrayActive || loopTray.length === 0) return;
-    const data = await spotifyFetch('/me/player');
-    if (!data || !data.item) return;
-    playbackState = data;
-    currentTrack = data.item;
-    renderNowPlaying();
-
-    const currentId = data.item.id;
-    const durationMs = data.item.duration_ms;
-    const progressMs = data.progress_ms || 0;
-    const remaining = durationMs - progressMs;
-
-    // Is current track in our tray?
-    const trayIds = loopTray.map(t => t.id);
-    const inTray = trayIds.includes(currentId);
-
-    // Pre-queue next song when < 15 seconds left on a tray song
-    if (inTray && remaining < 15000 && lastQueuedTrackId !== currentId + '_next') {
-      const idx = trayIds.indexOf(currentId);
-      const nextIdx = (idx + 1) % loopTray.length;
-      const nextTrack = loopTray[nextIdx];
-      await addToQueue(nextTrack.uri);
-      lastQueuedTrackId = currentId + '_next';
-      showToast(`Up next: ${nextTrack.name}`);
-    }
-  }, 3000);
-}
-
-function addToLoopTray(track) {
-  if (loopTray.find(t => t.id === track.id)) {
-    loopTray = loopTray.filter(t => t.id !== track.id);
-    showToast(`Removed "${track.name}" from Loop Tray`);
-  } else {
-    if (loopTray.length >= 10) { showToast('Max 10 songs in Loop Tray'); return; }
-    loopTray.push(track);
-    showToast(`"${track.name}" added to Loop Tray`);
-  }
-  renderTrackList();
-  renderTrayPanel();
-  updateTrayBadge();
-}
-
-function removeFromTray(id) {
-  loopTray = loopTray.filter(t => t.id !== id);
-  if (loopTray.length === 0 && loopTrayActive) {
-    loopTrayActive = false;
-    clearInterval(loopWatchInterval);
-  }
-  renderTrackList();
-  renderTrayPanel();
-  updateTrayBadge();
-}
-
-function updateTrayBadge() {
-  const badge = document.getElementById('tray-count-badge');
-  if (loopTray.length > 0) { badge.style.display = 'inline-flex'; badge.textContent = loopTray.length; }
-  else badge.style.display = 'none';
-}
-
-// ── RENDER ──
-function fmtMs(ms) {
-  const s = Math.floor(ms / 1000);
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-}
-
-function albumArt(images, size = 40) {
-  if (!images || !images.length) return '<div style="width:' + size + 'px;height:' + size + 'px;background:#333;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:' + Math.floor(size/2) + 'px">🎵</div>';
-  const img = images[images.length > 1 ? 1 : 0];
-  return `<img src="${img.url}" style="width:${size}px;height:${size}px;border-radius:4px;object-fit:cover" alt="art">`;
-}
-
-function renderNowPlaying() {
-  const section = document.getElementById('np-section');
-  if (!currentTrack) {
-    section.innerHTML = `<div style="padding:16px;background:#1a1a1a;margin:16px;border-radius:12px;color:${playbackState === null ? '#888' : '#666'};font-size:13px;text-align:center;border:1px solid #2a2a2a">
-      ${playbackState === null ? '<div class="spinner" style="margin:8px auto;display:block"></div><br>Checking playback...' : 'Open Spotify and play something to see it here.'}
-    </div>`;
-    return;
-  }
-  const t = currentTrack;
-  const isPlaying = playbackState?.is_playing;
-  const progress = playbackState?.progress_ms || 0;
-  const duration = t.duration_ms;
-  const pct = Math.min(100, (progress / duration) * 100);
-  const artists = t.artists?.map(a => a.name).join(', ') || '';
-  const inTray = loopTray.find(x => x.id === t.id);
-
-  const loopModeBadge = loopTrayActive
-    ? `<div style="text-align:center;margin-top:8px"><span style="background:rgba(29,185,84,0.15);color:#1DB954;font-size:10px;font-weight:700;padding:3px 12px;border-radius:500px;letter-spacing:0.5px">LOOP TRAY ACTIVE — ${loopTray.length} SONGS</span></div>`
-    : '';
-
-  section.innerHTML = `
-  <div class="now-playing-card">
-    <div class="np-label">NOW PLAYING</div>
-    <div class="np-main">
-      <div class="np-art">${albumArt(t.album?.images, 56)}</div>
-      <div class="np-info">
-        <div class="np-title">${t.name}${t.explicit ? '<span class="np-explicit">E</span>' : ''}</div>
-        <div class="np-artist">${artists}</div>
-      </div>
-      <button class="np-heart${inTray ? ' liked' : ''}" onclick='addToLoopTray(${JSON.stringify({id:t.id,name:t.name,uri:t.uri,artists:t.artists?.map(a=>a.name).join(", "),album:{images:t.album?.images||[]}})})' title="${inTray ? 'Remove from Loop Tray' : 'Add to Loop Tray'}">
-        ${inTray ? '♻' : '➕'}
-      </button>
+function rowHTML(t,role,num){
+  const inTray=loopTray.find(x=>x.id===t.id);
+  const isNow=role==='now';
+  const artists=t.artists?.map(a=>a.name).join(', ')||'';
+  // safe JSON for inline onclick
+  const td=encodeTrack({id:t.id,name:t.name,uri:t.uri,artists,album:{images:t.album?.images||[]}});
+  return`<div class="track-row${inTray?' in-tray':''}${isNow?' is-now':''}">
+    <div class="tr-num">${isNow?`<div class="playing-bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>`:(num||'')}</div>
+    <div class="tr-art">${artHTML(t.album?.images,38)}</div>
+    <div class="tr-info">
+      <div class="tr-name${isNow?' now':''}">${esc(t.name)}</div>
+      <div class="tr-sub">${esc(artists)}${t.album?.name?' · '+esc(t.album.name):''}</div>
     </div>
-    <div class="progress-wrap">
-      <div class="progress-times"><span>${fmtMs(progress)}</span><span>${fmtMs(duration)}</span></div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="tr-dur">${msToTime(t.duration_ms)}</div>
+    <div class="tr-actions">
+      ${inTray?'<span class="tray-dot"></span>':''}
+      <button class="add-btn${inTray?' added':''}" onclick="addToTray('${td}')">${inTray?'In Tray':'+ Tray'}</button>
     </div>
-    <div class="controls">
-      <button class="ctrl" onclick="skipPrev()" title="Previous"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
-      <button class="ctrl play-pause" onclick="${isPlaying ? 'pausePlayback' : 'resumePlayback'}()" title="${isPlaying ? 'Pause' : 'Play'}">
-        ${isPlaying
-          ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
-          : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
-      </button>
-      <button class="ctrl" onclick="skipNext()" title="Skip"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
-      <button class="ctrl${loopTrayActive ? ' active' : ''}" onclick="toggleLoopTray()" title="Loop Tray">
-        <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
-      </button>
-    </div>
-    ${loopModeBadge}
   </div>`;
 }
 
-function renderTrackList() {
-  const container = document.getElementById('track-list-container');
-  let filtered = recentTracks;
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    filtered = recentTracks.filter(t => t.name.toLowerCase().includes(q) || t.artists?.some(a => a.name.toLowerCase().includes(q)));
+// encode track data as base64 to safely pass through onclick
+function encodeTrack(obj){return btoa(unescape(encodeURIComponent(JSON.stringify(obj))))}
+function decodeTrack(str){return JSON.parse(decodeURIComponent(escape(atob(str))))}
+
+// ── LOOP TRAY ──
+function addToTray(encoded){
+  const track=decodeTrack(encoded);
+  const idx=loopTray.findIndex(t=>t.id===track.id);
+  if(idx>-1){loopTray.splice(idx,1);toast(`Removed "${track.name}" from tray`)}
+  else{
+    if(loopTray.length>=10){toast('Max 10 songs in Loop Tray');return}
+    loopTray.push(track);toast(`"${track.name}" added to Loop Tray`);
   }
-  if (filtered.length === 0) {
-    container.innerHTML = `<div class="tray-empty"><span class="big-icon">🔍</span>No tracks found.</div>`;
-    return;
-  }
-  container.innerHTML = `<div class="section-title">Recent Tracks</div><div class="track-list">` +
-    filtered.map((t, i) => {
-      const inTray = loopTray.find(x => x.id === t.id);
-      const isCurrent = currentTrack?.id === t.id;
-      const artists = t.artists?.map(a => a.name).join(', ') || '';
-      const trackData = JSON.stringify({id:t.id,name:t.name,uri:t.uri,artists,album:{images:t.album?.images||[]}}).replace(/'/g,"&#39;");
-      return `<div class="track-item${inTray ? ' in-loop' : ''}${isCurrent ? ' is-current' : ''}">
-        <div class="track-num${isCurrent ? ' playing-anim' : ''}">
-          ${isCurrent
-            ? '<div class="playing-bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>'
-            : `<span>${i + 1}</span>`}
-        </div>
-        <div class="track-art">${albumArt(t.album?.images, 40)}</div>
-        <div class="track-info">
-          <div class="track-name${isCurrent ? ' playing' : ''}">${t.name}</div>
-          <div class="track-sub">${artists} • ${t.album?.name || ''}</div>
-        </div>
-        <div class="track-duration">${fmtMs(t.duration_ms)}</div>
-        <div class="track-actions">
-          ${inTray ? '<span class="loop-dot"></span>' : ''}
-          <button class="add-loop-btn${inTray ? ' added' : ''}" onclick='addToLoopTray(${trackData})'>${inTray ? 'In Loop' : '+ Loop'}</button>
-          <a class="play-on-spotify-btn" href="${t.external_urls?.spotify}" target="_blank">▶</a>
-        </div>
-      </div>`;
-    }).join('') + `</div>`;
+  updateBadge();renderTray();renderNP();
+  if(currentTab==='queue')loadQueue();
 }
 
-function renderTrayPanel() {
-  const container = document.getElementById('tray-content');
-  const btn = document.getElementById('activate-btn');
-  if (loopTrayActive) {
-    btn.classList.add('active');
-    btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg> Deactivate Loop Tray`;
+function removeFromTray(id){
+  loopTray=loopTray.filter(t=>t.id!==id);
+  if(loopActive&&loopTray.length===0){deactivateLoop()}
+  updateBadge();renderTray();renderNP();
+  if(currentTab==='queue')loadQueue();
+}
+
+function updateBadge(){
+  const b=document.getElementById('tray-badge');
+  if(loopTray.length>0){b.style.display='inline-flex';b.textContent=loopTray.length}
+  else b.style.display='none';
+}
+
+async function toggleLoopTray(){
+  if(!loopActive){
+    if(loopTray.length===0){toast('Add songs to the Loop Tray first!');return}
+    await activateLoop();
   } else {
-    btn.classList.remove('active');
-    btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg> Activate Loop Tray`;
+    deactivateLoop();
   }
-  if (loopTray.length === 0) {
-    container.innerHTML = `<div class="tray-empty"><span class="big-icon">🔁</span>Your Loop Tray is empty.<br>Go to "Recently Played" and tap <strong style="color:#1DB954">+ Loop</strong> next to any song.</div>`;
+}
+
+async function activateLoop(){
+  loopActive=true;
+  const d=await api('/me/player');
+  if(d?.item){
+    const nowId=d.item.id;
+    prevTrackId=nowId;
+    // Immediately queue the next tray song regardless of whether current song is in tray
+    const trayIds=loopTray.map(t=>t.id);
+    const ci=trayIds.indexOf(nowId);
+    const nextIdx=(ci>-1?ci+1:0)%loopTray.length;
+    const next=loopTray[nextIdx];
+    await api(`/me/player/queue?uri=${encodeURIComponent(next.uri)}`,{method:'POST'});
+    lastQueuedFor=nowId;
+    toast(`Loop Tray ON → next up: ${next.name}`);
+  } else {
+    toast(`Loop Tray ON — ${loopTray.length} songs ready`);
+  }
+  startWatcher();
+  renderTray();renderNP();
+}
+
+function deactivateLoop(){
+  loopActive=false;
+  clearInterval(watchTimer);watchTimer=null;
+  lastQueuedFor=null;prevTrackId=null;
+  toast('Loop Tray deactivated');
+  renderTray();
+  // Force fresh API fetch so player immediately reflects real Spotify state
+  loadPlayback();
+}
+
+// WATCHER: polls every 2s. Always syncs player. On track change → queue next tray song.
+function startWatcher(){
+  clearInterval(watchTimer);
+  watchTimer=setInterval(async()=>{
+    if(!loopActive||loopTray.length===0)return;
+    const d=await api('/me/player');
+    if(!d?.item)return;
+
+    // Always update state + re-render so progress bar stays live (player sync fix)
+    playbackState=d;
+    currentTrack=d.item;
+    renderNP();
+
+    const nowId=d.item.id;
+
+    if(nowId!==prevTrackId){
+      prevTrackId=nowId;
+
+      // On ANY track change while loop is active, queue next tray song.
+      // If current song not in tray, start from index 0.
+      if(lastQueuedFor!==nowId){
+        lastQueuedFor=nowId;
+        const trayIds=loopTray.map(t=>t.id);
+        const ci=trayIds.indexOf(nowId);
+        const nextIdx=(ci>-1?ci+1:0)%loopTray.length;
+        const next=loopTray[nextIdx];
+        await api(`/me/player/queue?uri=${encodeURIComponent(next.uri)}`,{method:'POST'});
+        toast(`Loop Tray → up next: ${next.name}`);
+      }
+
+      renderTray();
+      if(currentTab==='queue')loadQueue();
+    }
+  },2000);
+}
+
+// ── PLAYBACK CONTROLS ──
+async function apiPause(){await api('/me/player/pause',{method:'PUT'});setTimeout(loadPlayback,400)}
+async function apiResume(){await api('/me/player/play',{method:'PUT',body:'{}'}); setTimeout(loadPlayback,400)}
+async function apiNext(){await api('/me/player/next',{method:'POST'});setTimeout(()=>{loadPlayback();if(currentTab==='queue')loadQueue()},700)}
+async function apiPrev(){await api('/me/player/previous',{method:'POST'});setTimeout(()=>{loadPlayback();if(currentTab==='queue')loadQueue()},700)}
+
+// ── RENDER HELPERS ──
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function msToTime(ms){const s=Math.floor(ms/1000);return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
+function artHTML(images,size){
+  if(!images||!images.length)return`<span style="font-size:${Math.floor(size*.5)}px">🎵</span>`;
+  const img=images.length>1?images[1]:images[0];
+  return`<img src="${img.url}" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:4px" loading="lazy" alt="">`;
+}
+
+function renderNP(){
+  const zone=document.getElementById('np-zone');
+  if(!currentTrack){
+    zone.innerHTML=`<div class="np-card" style="color:var(--muted);font-size:13px;text-align:center;padding:20px">${playbackState===null?'<span class="spinner"></span>Connecting...':'Open Spotify and play something.'}</div>`;
     return;
   }
-  container.innerHTML = `<div style="padding:0 8px 8px;font-size:12px;color:#666;font-weight:700;letter-spacing:1px;text-transform:uppercase">Tray — ${loopTray.length} song${loopTray.length!==1?'s':''}</div>` +
-    loopTray.map((t, i) => {
-      return `<div class="tray-item">
-        <div class="tray-order">${i + 1}</div>
-        <div class="tray-art">${albumArt(t.album?.images, 36)}</div>
-        <div class="tray-info">
-          <div class="tray-name">${t.name}</div>
-          <div class="tray-sub">${t.artists}</div>
-        </div>
-        <button class="tray-remove" onclick="removeFromTray('${t.id}')">×</button>
-      </div>`;
-    }).join('');
+  const t=currentTrack;
+  const playing=playbackState?.is_playing;
+  const prog=playbackState?.progress_ms||0;
+  const pct=Math.min(100,(prog/t.duration_ms)*100).toFixed(1);
+  const artists=t.artists?.map(a=>a.name).join(', ')||'';
+  const inTray=loopTray.find(x=>x.id===t.id);
+  const td=encodeTrack({id:t.id,name:t.name,uri:t.uri,artists,album:{images:t.album?.images||[]}});
+
+  zone.innerHTML=`
+  <div class="np-card">
+    <div class="np-badge">
+      <div class="playing-bars" style="height:9px"><div class="bar" style="width:2px"></div><div class="bar" style="width:2px"></div><div class="bar" style="width:2px"></div></div>
+      Now Playing
+    </div>
+    <div class="np-main">
+      <div class="np-art">${artHTML(t.album?.images,52)}</div>
+      <div class="np-info">
+        <div class="np-title">${esc(t.name)}</div>
+        <div class="np-artist">${esc(artists)}</div>
+      </div>
+      <button class="np-add-btn${inTray?' in-tray':''}" onclick="addToTray('${td}')">${inTray?'✓ In Tray':'+ Loop Tray'}</button>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-times"><span>${msToTime(prog)}</span><span>${msToTime(t.duration_ms)}</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="controls">
+      <button class="ctrl" onclick="apiPrev()"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+      <button class="ctrl-play" onclick="${playing?'apiPause':'apiResume'}()">
+        ${playing?'<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
+      </button>
+      <button class="ctrl" onclick="apiNext()"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+      <button class="ctrl${loopActive?' on':''}" onclick="toggleLoopTray()" title="Toggle Loop Tray">
+        <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+      </button>
+      <button class="ctrl" onclick="refreshAll()" title="Refresh"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.96 7.96 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8h-2a6 6 0 1 1-1.76-4.24l-3.24 3.24H20V4l-2.35 2.35z"/></svg></button>
+    </div>
+    ${loopActive?`<div class="loop-status"><span class="loop-pill">⟳ LOOP TRAY ACTIVE · ${loopTray.length} SONG${loopTray.length!==1?'S':''}</span></div>`:''}
+  </div>`;
 }
 
-function filterTracks() {
-  searchQuery = document.getElementById('search-input').value;
-  renderTrackList();
+function renderTray(){
+  const btn=document.getElementById('act-btn');
+  const svgIcon=`<svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>`;
+  if(loopActive){btn.className='activate-btn on';btn.innerHTML=`${svgIcon} Deactivate Loop Tray`}
+  else{btn.className='activate-btn off';btn.innerHTML=`${svgIcon} Activate Loop Tray`}
+
+  const list=document.getElementById('tray-list');
+  if(loopTray.length===0){
+    list.innerHTML=`<div class="tray-empty"><span class="big">🔁</span>Tray is empty.<br>Go to <strong>Up Next</strong> and tap <strong style="color:var(--green)">+ Tray</strong> on any song.</div>`;
+    return;
+  }
+  const nowId=currentTrack?.id;
+  list.innerHTML=`<div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:4px 0 8px">${loopTray.length} song${loopTray.length!==1?'s':''}</div>`+
+  loopTray.map((t,i)=>`
+    <div class="tray-row">
+      <div class="tray-idx">${i+1}</div>
+      <div class="tray-art">${artHTML(t.album?.images,34)}</div>
+      <div class="tray-info">
+        <div class="tray-name">${esc(t.name)}${nowId===t.id?'<span class="tray-now">NOW</span>':''}</div>
+        <div class="tray-sub">${esc(t.artists)}</div>
+      </div>
+      <button class="tray-rm" onclick="removeFromTray('${t.id}')">×</button>
+    </div>`).join('');
 }
 
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('tab-queue').classList.toggle('active', tab === 'queue');
-  document.getElementById('tab-tray').classList.toggle('active', tab === 'tray');
-  document.getElementById('panel-queue').style.display = tab === 'queue' ? 'block' : 'none';
-  document.getElementById('panel-tray').style.display = tab === 'tray' ? 'block' : 'none';
+// ── NAV ──
+function switchTab(tab){
+  currentTab=tab;
+  document.getElementById('tab-queue').classList.toggle('active',tab==='queue');
+  document.getElementById('tab-tray').classList.toggle('active',tab==='tray');
+  document.getElementById('panel-queue').style.display=tab==='queue'?'block':'none';
+  document.getElementById('panel-tray').style.display=tab==='tray'?'block':'none';
+  if(tab==='queue')loadQueue();
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._to);
-  t._to = setTimeout(() => t.classList.remove('show'), 2200);
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2100);
 }
+
+async function refreshAll(){await loadPlayback();if(currentTab==='queue')await loadQueue()}
 
 // ── INIT ──
-async function init() {
-  // Restore credentials
-  const cid = localStorage.getItem('sp_client_id');
-  const ruri = localStorage.getItem('sp_redirect_uri');
-  if (cid) document.getElementById('client-id-input').value = cid;
-  if (ruri) document.getElementById('redirect-uri-input').value = ruri;
+async function init(){
+  ['sp_cid','sp_ruri'].forEach(k=>{
+    const el=document.getElementById(k==='sp_cid'?'inp-cid':'inp-ruri');
+    if(el)el.value=localStorage.getItem(k)||'';
+  });
 
-  // Check for callback
-  if (window.location.search.includes('code=')) {
-    const ok = await handleCallback();
-    if (!ok) { showToast('Auth failed. Please try again.'); return; }
+  if(window.location.search.includes('code=')){
+    const ok=await handleCallback();
+    if(!ok){toast('Auth failed — try again');return}
   }
 
-  // Check existing token
-  const storedToken = localStorage.getItem('sp_access_token');
-  const expiry = parseInt(localStorage.getItem('sp_token_expiry') || '0');
-  if (storedToken && Date.now() < expiry) {
-    accessToken = storedToken;
-  } else if (localStorage.getItem('sp_refresh_token')) {
-    const ok = await tryRefreshToken();
-    if (!ok) return;
-  } else {
-    return; // stay on auth screen
-  }
+  const storedTk=localStorage.getItem('sp_token');
+  const exp=parseInt(localStorage.getItem('sp_exp')||0);
+  if(storedTk&&Date.now()<exp){token=storedTk}
+  else if(localStorage.getItem('sp_rt')){if(!await doRefresh())return}
+  else return;
 
-  // Show app
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'block';
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app-screen').style.display='block';
 
-  await loadUserProfile();
-  await loadPlaybackState();
-  await loadRecentTracks();
-  renderTrayPanel();
+  await loadProfile();
+  await loadPlayback();
+  await loadQueue();
+  renderTray();
 
-  // Poll playback state every 5s
-  setInterval(async () => {
-    await loadPlaybackState();
-    renderTrackList();
-  }, 5000);
+  // Poll playback every 3s (watcher takes over when loop is active)
+  setInterval(async()=>{if(!loopActive){await loadPlayback()}},3000);
+  // Refresh queue every 20s when on that tab
+  setInterval(()=>{if(currentTab==='queue'&&!loopActive)loadQueue()},20000);
 }
 
 init();
